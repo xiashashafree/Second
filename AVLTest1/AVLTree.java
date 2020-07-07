@@ -110,6 +110,7 @@ public class AVLTree {
      * @return
      */
 
+
     private void inorder(Node root, List<Integer> inorderList){
         if(root!=null){
             inorder(root.left,inorderList);
@@ -118,9 +119,40 @@ public class AVLTree {
         }
 
     }
-	
-	public void getHeight(Node root){
-		List<Integer> list = new ArrayList<>();
-		return;
+
+    private void verifyHeight(Node root){
+        if(root != null){
+            int left = getHeight(root.left);
+            int right = getHeight(root.right);
+            if(right - left == -1 || right -left ==2){
+                throw new RuntimeException("key="+root.key+"高度不平衡");
+            }
+            verifyHeight(root.left);
+
+        }
+    }
+    private void verifyBF(Node root){
+        if(root != null){
+            verifyBF(root.left);
+            if(root.bf!=-1 && root.bf !=1 && root.bf!=0){
+                throw new RuntimeException("key="+root.key+"的bf不合格");
+            }
+        }
+    }
+	public int getHeight(Node root){
+        if(root == null){
+            return 0;
+        }
+		return Math.max(getHeight(root.left)+1,getHeight(root.right)+1);
 	}
+
+	private void leftRotate(Node parent){//解决右右失衡
+
+    }
+
+    private void rightRotate(Node parent){//解决左左失衡
+
+
+
+    }
 }
