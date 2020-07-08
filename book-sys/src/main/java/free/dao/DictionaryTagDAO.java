@@ -1,10 +1,7 @@
 package free.dao;
 
 import free.excpetion.SystemException;
-import free.model.Book;
-import free.model.BorrowRecord;
-import free.model.Classes;
-import free.model.Student;
+import free.model.*;
 import free.util.DBUtil;
 
 import java.sql.Connection;
@@ -14,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BorrowRecordDAO {
-    public static List<BorrowRecord> query() {
+public class DictionaryTagDAO {
+    public static List<DictionaryTag> query(String key) {
         List<BorrowRecord> records = new ArrayList<>();
         Connection c = null;
         PreparedStatement ps = null;

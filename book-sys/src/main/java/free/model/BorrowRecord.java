@@ -1,9 +1,10 @@
 package free.model;
 
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Date;
 
 /**
  * 图书借阅信息
@@ -39,4 +40,10 @@ public class BorrowRecord {
      * 创建时间
      */
     private Date createTime;
+
+    private Book book;
+
+    private Classes classes;
+
+    private Student student;
 }

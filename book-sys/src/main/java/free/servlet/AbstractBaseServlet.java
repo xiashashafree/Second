@@ -2,12 +2,15 @@ package free.servlet;
 
 import free.excpetion.BaseException;
 import free.model.ResponseResult;
+import free.util.JSONUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public abstract class AbstractBaseServlet extends HttpServlet {
     @Override
@@ -19,8 +22,8 @@ public abstract class AbstractBaseServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
-
-        ResponseResult r = null;
+        resp.setContentType("application/json");
+        ResponseResult r = new ResponseResult();
 
         try {
             Object data=process(req,resp);
@@ -38,8 +41,15 @@ public abstract class AbstractBaseServlet extends HttpServlet {
                 r.setCode("500");
                 r.setMessage("未知的错误");
             }
+            //设置堆栈信息
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            r.setStackTrace(sw.toString());
         }
-
+        PrintWriter pw = resp.getWriter();
+        pw.println(JSONUtil.write(r));
+        pw.flush();
     }
     public abstract Object process(HttpServletRequest req, HttpServletResponse resp) throws Exception;
 }

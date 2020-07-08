@@ -1,5 +1,6 @@
 package free.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import free.excpetion.SystemException;
 
@@ -22,7 +23,7 @@ public class JSONUtil {
         try{
             return MAPPER.readValue(is,clazz);
         }catch(IOException e){
-            throw new SystemException("00003","http请求解析json异常");
+            throw new SystemException("00003","http请求解析json异常",e);
 
         }
     }
@@ -30,8 +31,8 @@ public class JSONUtil {
 
         try{
             return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(o);
-        }catch(IOException e){
-            throw new SystemException("00003","http请求解析json异常");
+        }catch(JsonProcessingException e){
+            throw new SystemException("00003","json序列化异常"+o,e);
 
         }
     }
