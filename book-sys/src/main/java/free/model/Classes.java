@@ -1,9 +1,10 @@
 package free.model;
 
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Date;
 
 /**
  * 班级表
@@ -11,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Classes {
+public class Classes  extends DictionaryTag {
     
     private Integer id;
 

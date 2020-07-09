@@ -284,7 +284,7 @@ let borrowRecordTabOptions = {
         field: 'book.id',
         submitName: 'bookId',//新增/修改提交的字段名
         type: "select",//新增/修改时，字段为下拉菜单
-        url: "book/queryAsDict2",//新增/修改时，下拉菜单初始化数据url
+        url: "book/queryAsDict",//新增/修改时，下拉菜单初始化数据url
         visible: false,//表格不显示，新增/修改弹出框使用
         switchable: false,//表格是否允许不展示列
         search: true,//下拉菜单是否可搜索
