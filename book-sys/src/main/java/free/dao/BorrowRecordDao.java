@@ -10,6 +10,7 @@ import free.util.DBUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -67,8 +68,8 @@ public class BorrowRecordDAO {
                 s.setIdCard(rs.getString("id_card"));
                 br.setStudent(s);
                 Classes classes = new Classes();
-                classes.setId(rs.getInt("class_id"));
-                classes.setClassesName(rs.getString("class_name"));
+                classes.setId(rs.getInt("classes_id"));
+                classes.setClassesName(rs.getString("classes_name"));
                 classes.setClassesGraduateYear(rs.getString("classes_graduate_year"));
                 classes.setClassesDesc(rs.getString("classes_desc"));
                 classes.setClassesMajor(rs.getString("classes_major"));
@@ -137,8 +138,8 @@ public class BorrowRecordDAO {
                 s.setIdCard(rs.getString("id_card"));
                 br.setStudent(s);
                 Classes classes = new Classes();
-                classes.setId(rs.getInt("class_id"));
-                classes.setClassesName(rs.getString("class_name"));
+                classes.setId(rs.getInt("classes_id"));
+                classes.setClassesName(rs.getString("classes_name"));
                 classes.setClassesGraduateYear(rs.getString("classes_graduate_year"));
                 classes.setClassesDesc(rs.getString("classes_desc"));
                 classes.setClassesMajor(rs.getString("classes_major"));
@@ -150,5 +151,59 @@ public class BorrowRecordDAO {
             DBUtil.close(c,ps,rs);
         }
         return br;
+    }
+
+    public static int insert(BorrowRecord record) {
+
+        Connection c = null;
+        PreparedStatement ps = null;
+
+        try {
+            c = DBUtil.getConnection();
+            String sql = "insert into borrow_record(book_id,student_id,start_time,end_time) values(?,?,?,?) where id = ?";
+            ps = c.prepareStatement(sql);
+
+            ps.setInt(1,record.getId());
+            ps.setInt(2,record.getStudentId());
+            ps.setTimestamp(3,new Timestamp(record.getStartTime().getTime()));
+            ps.setTimestamp(4,new Timestamp(record.getEndTime().getTime()));
+            ps.setInt(5,record.getId());
+            return  ps.executeUpdate();
+
+        } catch (Exception e) {
+            throw new SystemException("0000010", "查询图书信息出错");
+        } finally {
+            DBUtil.close(c, ps);
+        }
+
+    }
+
+    public static int delete(String[] ids) {
+        Connection c = null;
+        PreparedStatement ps = null;
+
+        try {
+            c = DBUtil.getConnection();
+            StringBuilder sql = new StringBuilder("delete from borrow_record where id in (");
+            for (int i = 0; i < ids.length ; i++) {
+                if(i != 0){
+                    sql.append(",");
+
+                }
+                sql.append("?");
+            }
+            sql.append(")");
+            ps = c.prepareStatement(sql.toString());
+            for (int i = 0; i < ids.length ; i++) {
+                ps.setInt(i+1,Integer.parseInt(ids[i]));
+            }
+
+            return  ps.executeUpdate();
+
+        } catch (Exception e) {
+            throw new SystemException("0000010", "查询图书信息出错");
+        } finally {
+            DBUtil.close(c, ps);
+        }
     }
 }

@@ -20,8 +20,7 @@ public class StudentDAO {
 
         try{
             c = DBUtil.getConnection();
-            String sql = "select s.id,s.student_name,s.id_card,s.student_no from student s j" +
-                    "oin classes c on s.classes_id = c.id where s.id=?;";
+            String sql = "select s.id,s.student_name,s.id_card,s.student_no from student s where s.classes_id=?;";
             ps = c.prepareStatement(sql);
             ps.setInt(1,id);
             rs = ps.executeQuery();

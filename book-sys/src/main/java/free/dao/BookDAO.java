@@ -18,14 +18,14 @@ public class BookDAO {
         ResultSet rs = null;
         try {
             c = DBUtil.getConnection();
-            String sql = "";
+            String sql = "select id,book_name,author,price from book ";
             ps = c.prepareStatement(sql);
 
             rs = ps.executeQuery();
             while (rs.next()) {
                 Book book = new Book();
-                book.setDictionaryTagKey(rs.getString("dictionary_tag_key"));
-                book.setDictionaryTagValue(rs.getString("dictionary_tag_value"));
+                book.setDictionaryTagKey(rs.getString("id"));
+                book.setDictionaryTagValue(rs.getString("book_name"));
                 book.setAuthor(rs.getString("author"));
                 book.setPrice(rs.getBigDecimal("price"));
                 books.add(book);
