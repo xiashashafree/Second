@@ -1,10 +1,8 @@
 package free.dao;
 
 import free.excpetion.SystemException;
-import free.model.Book;
-import free.model.BorrowRecord;
-import free.model.Classes;
-import free.model.Student;
+import free.model.*;
+import free.util.CountHolder;
 import free.util.DBUtil;
 
 import java.sql.Connection;
@@ -16,14 +14,14 @@ import java.util.Date;
 import java.util.List;
 
 public class BorrowRecordDAO {
-    public static List<BorrowRecord> query() {
+    public static List<BorrowRecord> query(Page p) {
         List<BorrowRecord> records = new ArrayList<>();
         Connection c = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try{
             c = DBUtil.getConnection();
-            String sql = "select br.id," +
+            StringBuilder sql = new StringBuilder("select br.id," +
                     "       br.book_id," +
                     "       br.student_id," +
                     "       br.start_time," +
@@ -44,9 +42,52 @@ public class BorrowRecordDAO {
                     "  from borrow_record br" +
                     "         join book b on br.book_id = b.id" +
                     "         join student s on br.student_id = s.id" +
-                    "         join classes c on s.classes_id = c.id";
-            ps = c.prepareStatement(sql);
+                    "         join classes c on s.classes_id = c.id");
+
+
+
+            //搜素内容不为空字符串//占位符替换时会自动加上单引号
+            if(p.getSearchText()!= null && p.getSearchText().trim().length()>0){
+                sql.append(" where s.student_name like ? or b.book_name like ?");
+            }
+
+            //升序或降序
+            if(p.getSortOrder() != null && p.getSortOrder().trim().length()>0){
+                sql.append(" order by br.create_time" +p.getSortOrder());
+            }
+            ps = c.prepareStatement(sql.toString());
+
+
+
+            StringBuilder countSql = new StringBuilder("select count(0) count from(");
+            countSql.append(sql);
+            countSql.append(") tmp");
+
+
+            ps = c.prepareStatement(countSql.toString());
+
+            if(p.getSearchText() != null && p.getSearchText().trim().length()>0){
+                ps.setString(1,"%"+p.getSearchText()+"%");
+                ps.setString(2,"%"+p.getSearchText()+"%");
+
+            }
             rs = ps.executeQuery();
+            while(rs.next()){
+                int count = rs.getInt("count");
+                CountHolder.set(count);
+                //需要在返回的数据中将count设置为total
+            }
+            sql.append("   limit ?,?");
+            ps= c.prepareStatement(sql.toString());
+            int i=1;
+            if(p.getSearchText()!= null && p.getSearchText().trim().length()>0){
+                ps.setString(i++,"%"+p.getSearchText()+"%");
+                ps.setString(i++,"%"+p.getSearchText()+"%");
+            }
+            ps.setInt(i++,(p.getPageNumber()-1)*p.getPageSize());
+            ps.setInt(i++,p.getPageNumber());
+            rs = ps.executeQuery();
+
             while(rs.next()){
                 BorrowRecord br = new BorrowRecord();
                 br.setId(rs.getInt("id"));
@@ -76,6 +117,7 @@ public class BorrowRecordDAO {
                 br.setClasses(classes);
                 records.add(br);
             }
+
         }catch(Exception e){
             throw new SystemException("000001","查询图书借阅信息出错");
         }finally{

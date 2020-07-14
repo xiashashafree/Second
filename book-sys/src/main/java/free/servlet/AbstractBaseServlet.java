@@ -2,6 +2,7 @@ package free.servlet;
 
 import free.excpetion.BaseException;
 import free.model.ResponseResult;
+import free.util.CountHolder;
 import free.util.JSONUtil;
 
 import javax.servlet.ServletException;
@@ -30,6 +31,7 @@ public abstract class AbstractBaseServlet extends HttpServlet {
             r.setSuccess(true);
             r.setCode("000000");
             r.setMessage("操作成功");
+            r.setTotal(CountHolder.get());
             r.setData(data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,6 +48,8 @@ public abstract class AbstractBaseServlet extends HttpServlet {
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
             r.setStackTrace(sw.toString());
+        }finally{
+            CountHolder.remove();
         }
         PrintWriter pw = resp.getWriter();
         pw.println(JSONUtil.write(r));
