@@ -4,9 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-import unittest, time, re
-
-
+import unittest, time,os
 class Baidu1(unittest.TestCase):
 
 
@@ -20,21 +18,23 @@ class Baidu1(unittest.TestCase):
         self.accept_next_alert = True
 
 
-    def test_baidusearch(self):
 
-
-        driver = self.driver
-        driver.get(self.base_url + "/")
-        driver.find_element_by_id("kw").click()
-        driver.find_element_by_id("kw").clear()
+    # def test_baidusearch(self):
+    #
+    #
+    #     driver = self.driver
+    #     driver.get(self.base_url + "/")
+    #     driver.find_element_by_id("kw").click()
+    #     driver.find_element_by_id("kw").clear()
 #
 # 批量执行脚本
 # 构建测试套件
 # 完整的单元测试很少只执行一个测试用例，开发人员通常都需要编写多个测试用例才能对某一软件功能进行比较完
 # 整的测试，这些相关的测试用例称为一个测试用例集，在unittest中是用TestSuite
 # 类来表示的。
-        driver.find_element_by_id("kw").send_keys(u"测试")
-        driver.find_element_by_id("su").click()
+#         driver.find_element_by_id("kw").send_keys(u"测试")
+#         driver.find_element_by_id("su").click()
+
 
 
     def test_hao(self):
@@ -43,8 +43,17 @@ class Baidu1(unittest.TestCase):
         driver = self.driver
         driver.get(self.base_url + "/")
         driver.find_element_by_link_text("hao123").click()
-        self.assertEqual(u"hao123_上网从这里开始", driver.title)
+        time.sleep(2)
+        try:
+            self.assertEqual(driver.title,"123", driver.title)
+        except:
+            self.saveScreenShot(driver,"hao.png")
 
+    def saveScreenShot(self,driver,filename):
+        if not os.path.exists('./image'):
+            os.makedirs('./image')
+        now = time.strftime("%Y%m%d-%H%M%S",time.localtime(time.time()))
+        driver.get_screenshot_as_file('./image/'+now+filename)
 
     def is_element_present(self, how, what):
 

@@ -1,7 +1,6 @@
 import unittest
 from selenium import webdriver
-import time
-
+import tim
 class Baidu(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Chrome()
@@ -9,7 +8,7 @@ class Baidu(unittest.TestCase):
 
     def test_baidu(self):
         driver = self.driver
-        driver.get(self.base_url)
+        driver.get(self.base_url+"/")
         driver.implicitly_wait(3)
         driver.find_element_by_id("kw").send_keys("朱一龙")
         driver.find_element_by_id("su").click()
