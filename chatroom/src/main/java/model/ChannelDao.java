@@ -4,7 +4,10 @@ import util.ChatroomException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChannelDao {
 
@@ -52,28 +55,45 @@ public class ChannelDao {
 
 
     }
-    //3.查看频道
-    public void select(Channel channel){
+    //3.查看频道列表
+    public List<Channel> select(){
         Connection c = DBUtil.getConnection();
-        String sql = "insert into channel values(null,?);";
+        String sql = "select * from channel;";
         PreparedStatement ps =  null;
+        ResultSet  rs = null;
+        List<Channel> channels = new ArrayList<>();
         try {
             ps = c.prepareStatement(sql);
-            ps.setString(1, channel.getChannelName());
-            int ret = ps.executeUpdate();
-            if(ret!=1){
-                throw new ClassCastException("插入频道异常");
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Channel channel = new Channel();
+                channel.setChannelId(rs.getInt("channelId"));
+                channel.setChannelName(rs.getString("channelName"));
+                channels.add(channel);
             }
-            System.out.println("插入频道成功");
+            return channels;
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new ChatroomException("插入频道成功");
+
         }finally {
             DBUtil.close(c,ps,null);
         }
 
-
+        return null;
     }
     //4.指定用户关注
 
+    public static void main(String[] args) {
+        //创建一个ChannelDAO实例
+        ChannelDao channelDao = new ChannelDao();
+        Channel channel = new Channel();
+//        channel.setChannelName("拢龙的家");
+//        channelDao.add(channel);
+
+        List<Channel> channels = new ArrayList<>();
+        channels =  channelDao.select();
+        System.out.println(channels);
+
+        channelDao.delete(2);
+    }
 }

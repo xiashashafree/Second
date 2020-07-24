@@ -7,7 +7,7 @@ public class Message {
     private int messageId;
     private int userId;
     private int channelId;
-    private String context;
+    private String content;
     private Timestamp sendTime;
 
 
@@ -37,12 +37,12 @@ public class Message {
         this.channelId = channelId;
     }
 
-    public String getContext() {
-        return context;
+    public String getContent() {
+        return content;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Timestamp getSendTime() {
@@ -67,7 +67,7 @@ public class Message {
                 "messageId=" + messageId +
                 ", userId=" + userId +
                 ", channelId=" + channelId +
-                ", context='" + context + '\'' +
+                ", context='" + content + '\'' +
                 ", sendTime=" + sendTime +
                 ", nickName='" + nickName + '\'' +
                 '}';
