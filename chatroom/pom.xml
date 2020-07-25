@@ -18,6 +18,12 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.38</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
+        </dependency>
 
         <!-- javaee web依赖包：运行时由web容器提供，
             包括：WebSocket 1.1, JSON Binding 1.0, JSON Processing 1.1,

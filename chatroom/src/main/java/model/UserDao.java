@@ -12,11 +12,11 @@ public class UserDao {
 
     //1.新增一个用户：注册
     public void add(User user){
-        //1.获取数据库连接
+        //1.获取数据库连接channelName
         Connection c = DBUtil.getConnection();
 
         //2.拼装SQL语句
-        String sql = "insert into user values(null,?,?,?,now())";
+        String sql = "insert into user(name,password,nickName,lastLogout) values(?,?,?,now())";
         PreparedStatement ps = null;
         try {
             ps = c.prepareStatement(sql);
