@@ -87,7 +87,7 @@ public class LoginServlet extends HttpServlet {
             //  如果session不存在，就是登录是失败的状态
             HttpSession httpSession = req.getSession(false);
             if(httpSession == null){
-                throw new ChatroomException("");
+                throw new ChatroomException("当前未登录");
             }
             User user = (User)httpSession.getAttribute("user");
             response.ok = 1;

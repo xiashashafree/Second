@@ -16,7 +16,7 @@ public class UserDao {
         Connection c = DBUtil.getConnection();
 
         //2.拼装SQL语句
-        String sql = "insert into user(name,password,nickName,lastLogout) values(?,?,?,now())";
+        String sql = "insert into user values(null,?,?,?,now())";
         PreparedStatement ps = null;
         try {
             ps = c.prepareStatement(sql);

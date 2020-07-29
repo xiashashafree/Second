@@ -12,13 +12,13 @@ import java.util.concurrent.LinkedBlockingDeque;
 //管理消息和用户列表，实现消息转发
 //这个类作为一个单例即可
 public class MessageCenter {
-    private static MessageCenter instance = null;
+    private volatile static MessageCenter instance = null;
 
     public static MessageCenter getInstance() {
         if (instance == null) {
-            synchronized (Message.class) {
+            synchronized (MessageCenter.class) {
                 if (instance == null) {
-
+                    instance = new MessageCenter();
                 }
             }
         }
@@ -73,6 +73,7 @@ public class MessageCenter {
                 }
             }
         };
+        t.start();
     }
 
 }

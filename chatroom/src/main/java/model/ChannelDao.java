@@ -21,12 +21,12 @@ public class ChannelDao {
             ps.setString(1, channel.getChannelName());
             int ret = ps.executeUpdate();
             if(ret!=1){
-                throw new ClassCastException("插入频道异常");
+                throw new ChatroomException("插入频道异常");
             }
             System.out.println("插入频道成功");
         } catch (SQLException e) {
            e.printStackTrace();
-           throw new ChatroomException("插入频道成功");
+           throw new ChatroomException("插入频道异常");
         }finally {
             DBUtil.close(c,ps,null);
         }
@@ -43,12 +43,12 @@ public class ChannelDao {
             ps.setInt(1, channelId);
             int ret = ps.executeUpdate();
             if(ret!=1){
-                throw new ClassCastException("删除频道异常");
+                throw new ChatroomException("删除频道异常");
             }
             System.out.println("删除频道成功");
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new ChatroomException("删除频道成功");
+            throw new ChatroomException("删除频道失败");
         }finally {
             DBUtil.close(c,ps,null);
         }
@@ -83,17 +83,17 @@ public class ChannelDao {
     }
     //4.指定用户关注
 
-    public static void main(String[] args) {
-        //创建一个ChannelDAO实例
-        ChannelDao channelDao = new ChannelDao();
-        Channel channel = new Channel();
-//        channel.setChannelName("拢龙的家");
-//        channelDao.add(channel);
-
-        List<Channel> channels = new ArrayList<>();
-        channels =  channelDao.select();
-        System.out.println(channels);
-
-        channelDao.delete(2);
-    }
+//    public static void main(String[] args) {
+//        //创建一个ChannelDAO实例
+//        ChannelDao channelDao = new ChannelDao();
+//        Channel channel = new Channel();
+////        channel.setChannelName("拢龙的家");
+////        channelDao.add(channel);
+//
+//        List<Channel> channels = new ArrayList<>();
+//        channels =  channelDao.select();
+//        System.out.println(channels);
+//
+//        channelDao.delete(2);
+//    }
 }

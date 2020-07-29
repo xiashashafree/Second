@@ -18,7 +18,7 @@ public class DBUtil {
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/chatroom?character=utf-8&useSSL=true";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
-    private static  DataSource dataSource = null;
+    private static  volatile DataSource dataSource = null;
 
     public static DataSource getDataSource(){
         if(dataSource == null){

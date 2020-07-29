@@ -37,7 +37,7 @@ public class MessageDao {
     public List<Message> select(Timestamp from, Timestamp to){
 
         Connection c = DBUtil.getConnection();
-        String sql = "select * from message where sendTime >= ? and sendTime<=?;";
+        String sql = "select * from message inner join user on message.userId =  user.userId where sendTime >= ? and sendTime<=?;";
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Message> messages = new ArrayList<>();
@@ -54,6 +54,7 @@ public class MessageDao {
                 message.setContent(rs.getString("content"));
                 message.setUserId(rs.getInt("userId"));
                 message.setSendTime(rs.getTimestamp("sendTime"));
+                message.setNickName(rs.getString("nickName"));
                 messages.add(message);
             }
             return messages;
@@ -66,22 +67,22 @@ public class MessageDao {
 
     }
 
-    public static void main(String[] args) {
-        MessageDao messageDao = new MessageDao();
-        Message message = new Message();
-        message.setUserId(1);
-        message.setChannelId(2);
-        message.setContent("江月晃重山");
-        message.setSendTime(new Timestamp(System.currentTimeMillis()));
-        messageDao.add(message);
-        message.setUserId(2);
-        message.setChannelId(1);
-        message.setContent("（づ￣3￣）づ╭❤～");
-        message.setSendTime(new Timestamp(System.currentTimeMillis()));
-        messageDao.add(message);
-        List<Message> messages = messageDao.select(new Timestamp(1595600000000L),
-                new Timestamp(1595680888888L));
-        System.out.println(messages);
-    }
+//    public static void main(String[] args) {
+//        MessageDao messageDao = new MessageDao();
+//        Message message = new Message();
+//        message.setUserId(1);
+//        message.setChannelId(2);
+//        message.setContent("江月晃重山");
+//        message.setSendTime(new Timestamp(System.currentTimeMillis()));
+//        messageDao.add(message);
+//        message.setUserId(2);
+//        message.setChannelId(1);
+//        message.setContent("（づ￣3￣）づ╭❤～");
+//        message.setSendTime(new Timestamp(System.currentTimeMillis()));
+//        messageDao.add(message);
+//        List<Message> messages = messageDao.select(new Timestamp(1595600000000L),
+//                new Timestamp(1595680888888L));
+//        System.out.println(messages);
+//    }
 
 }
